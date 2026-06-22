@@ -42,7 +42,7 @@ The long-term objective of this project is to bridge the gap between:
 
 The project is divided into several stages.
 
-### Stage 1 — Quantum Dynamics Simulation
+### Stage 1. Quantum Dynamics Simulation
 
 Develop a simulator capable of:
 
@@ -61,19 +61,19 @@ Topics covered:
 
 ---
 
-### Stage 2 — Controlled Quantum Dynamics
+### Stage 2. Controlled Quantum Dynamics
 
 Introduce external control fields into the Hamiltonian:
 
-[
+\[
 H(t)=H_0+\sum_i u_i(t)H_i
-]
+\]
 
 where:
 
-* (H_0) is the drift Hamiltonian
-* (H_i) are control Hamiltonians
-* (u_i(t)) are time-dependent control amplitudes
+* $H_0$ is the drift Hamiltonian
+* $H_i$ are control Hamiltonians
+* $u_i(t)$ are time-dependent control amplitudes
 
 Applications:
 
@@ -83,7 +83,7 @@ Applications:
 
 ---
 
-### Stage 3 — Gate Fidelity Analysis
+### Stage 3. Gate Fidelity Analysis
 
 Implement quantitative measures of control performance.
 
@@ -101,7 +101,7 @@ Metrics:
 
 ---
 
-### Stage 4 — Optimal Control
+### Stage 4. Optimal Control
 
 Formulate quantum gate synthesis as an optimization problem.
 
@@ -124,7 +124,7 @@ Libraries:
 
 ---
 
-### Stage 5 — GRAPE Algorithm
+### Stage 5. GRAPE Algorithm
 
 Implement the Gradient Ascent Pulse Engineering (GRAPE) algorithm.
 
@@ -142,7 +142,7 @@ Expected outcomes:
 
 ---
 
-### Stage 6 — Open Quantum Systems
+### Stage 6. Open Quantum Systems
 
 Extend the simulator to include realistic noise processes.
 
@@ -158,7 +158,7 @@ This stage introduces realistic hardware effects encountered in experimental qua
 
 ---
 
-### Stage 7 — Transmon Qubit Modeling
+### Stage 7. Transmon Qubit Modeling
 
 Develop a simplified model of a superconducting transmon qubit.
 
