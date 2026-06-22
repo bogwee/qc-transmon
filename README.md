@@ -65,9 +65,9 @@ Topics covered:
 
 Introduce external control fields into the Hamiltonian:
 
-\[
+$$
 H(t)=H_0+\sum_i u_i(t)H_i
-\]
+$$
 
 where:
 
