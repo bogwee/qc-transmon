@@ -14,3 +14,14 @@ def mixed_fidelity(rho1, rho2):
 def mixed_pure_fidelity(rho, psi):
     """Calculates the fidelity between a mixed state (density matrix) and a pure state."""
     return np.vdot(psi, rho @ psi).real
+
+def average_gate_fidelity(U_target, U_actual):
+    """Average gate fidelity between two unitary quantum operations."""
+    d = U_target.shape[0]
+
+    if U_target.shape != U_actual.shape:
+        raise ValueError("The target and actual gates must have the same shape.")
+
+    overlap = np.trace(U_target.conj().T @ U_actual)
+
+    return (abs(overlap)**2 + d) / (d * (d + 1))
