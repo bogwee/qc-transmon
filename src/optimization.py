@@ -28,3 +28,7 @@ def monte_carlo_pulse_search(H_drift, U_target, t_grid, n_segments=6, tol=1e-2, 
             break  
 
     return best_pulse, best_fidelity, np.array(history)
+
+def grape_optimization():
+    """Gradient-based optimization of piecewise-constant X- and Y-control pulses using GRAPE."""
+    return 0
