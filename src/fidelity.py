@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.linalg as la
+import jax.numpy as jnp
 
 def pure_fidelity(state1, state2):
     """Calculates the fidelity between two pure quantum states."""
@@ -25,3 +26,10 @@ def average_gate_fidelity(U_target, U_actual):
     overlap = np.trace(U_target.conj().T @ U_actual)
 
     return (abs(overlap)**2 + d) / (d * (d + 1))
+
+def gate_fidelity(U_target, U_actual):
+    """Calculates the gate fidelity with jax."""
+    d = U_target.shape[0]
+    overlap = jnp.trace(U_target.conj().T @ U_actual)
+
+    return (jnp.abs(overlap)**2 + d) / (d * (d + 1))

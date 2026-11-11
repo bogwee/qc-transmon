@@ -18,8 +18,8 @@ SX = gate([1, 0, 0], np.pi / 2)
 SY = gate([0, 1, 0], np.pi / 2)
 
 
-CNOT_gate = np.array([[1, 0, 0, 0],
-                      [0, 1, 0, 0],
-                      [0, 0, 0, 1],
-                      [0, 0, 1, 0]], dtype=complex)
+CNOT = np.array([[1, 0, 0, 0],
+                 [0, 1, 0, 0],
+                 [0, 0, 0, 1],
+                 [0, 0, 1, 0]], dtype=complex)
 

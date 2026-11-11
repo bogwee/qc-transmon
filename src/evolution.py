@@ -1,15 +1,17 @@
 import scipy.linalg as la
 import numpy as np
 from scipy.interpolate import CubicSpline
+import jax.numpy as jnp
+import jax
 
-sigma_x = np.array([[0, 1], [1, 0]], dtype=complex)
-sigma_y = np.array([[0, -1j], [1j, 0]], dtype=complex)
-sigma_z = np.array([[1, 0], [0, -1]], dtype=complex)
-identity = np.eye(2, dtype=complex)
+X = np.array([[0, 1], [1, 0]], dtype=complex)
+Y = np.array([[0, -1j], [1j, 0]], dtype=complex)
+Z = np.array([[1, 0], [0, -1]], dtype=complex)
+I = np.eye(2, dtype=complex)
 
 def hamiltonian(omega, beta, delta):
     """Returns the Hamiltonian matrix."""
-    return 0.5 * (omega * sigma_z + beta * sigma_y + delta * sigma_x)
+    return 0.5 * (omega * Z + beta * Y + delta * X)
 
 def propagator(H, t):
     """Propagator for a time-independent Hamiltonian."""
@@ -60,7 +62,7 @@ def make_controlled_hamiltonian(H_drift, t_final, pulse_x, pulse_y=np.zeros(1)):
     segment_duration_x = t_final / n_segments_x
     segment_duration_y = t_final / n_segments_y
 
-    H_total = lambda t: H_drift(t) + 0.5 * (pulse_x[min(int(t / segment_duration_x), n_segments_x - 1)] * sigma_x + pulse_y[min(int(t / segment_duration_y), n_segments_y - 1)] * sigma_y)
+    H_total = lambda t: H_drift(t) + 0.5 * (pulse_x[min(int(t / segment_duration_x), n_segments_x - 1)] * X + pulse_y[min(int(t / segment_duration_y), n_segments_y - 1)] * Y)
 
     return H_total
 
@@ -71,3 +73,24 @@ def simulate_pulse(H_drift, t_grid, pulse_x, pulse_y=np.zeros(1)):
 
     return propagate_time_dependent(H_total, t_grid)[-1]
 
+
+def propagator_jax(drift, controls, delta_t):
+    """Fully parallel O(log N) total propagator without scan carry or lambdas."""
+    pulse_x, pulse_y = controls
+    r = jnp.sqrt(drift**2 + pulse_x**2 + pulse_y**2)
+    angle = r * delta_t / 2
+    coeff = (delta_t / 2) * jnp.sinc(angle / jnp.pi)
+
+    H_vec = (
+        pulse_x[:, None, None] * jnp.asarray(X, dtype=jnp.complex128)
+        + pulse_y[:, None, None] * jnp.asarray(Y, dtype=jnp.complex128)
+        + drift * jnp.asarray(Z, dtype=jnp.complex128)
+    )
+    U_steps = (
+        jnp.cos(angle)[:, None, None] * jnp.asarray(I, dtype=jnp.complex128)
+        - 1j * coeff[:, None, None] * H_vec
+    )
+
+    U_cumulative = jax.lax.associative_scan(jnp.matmul, U_steps[::-1])
+    
+    return U_cumulative[-1]
